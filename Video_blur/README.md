@@ -4,7 +4,11 @@
 
 # 🎭 Video_blur - 얼굴 모자이크 처리 GUI 애플리케이션
 
-PySide6, OpenCV, moviepy, pytubefix 등을 활용하여 YouTube 영상을 다운로드하고,  
+- 기존 youtubedownload 애플리케이션을 업그레이드 한 버전으로 얼굴인식 + 블러 처리 기능 추가
+- QThread 기반 멀티 스레딩 도입
+- GUI 구성 향상 (PyQt5 -> PySide6)
+- PyInstaller 대응 강화
+- PySide6, OpenCV, moviepy, pytubefix 등을 활용하여 YouTube 영상을 다운로드하고,  
 해당 영상에서 얼굴을 자동으로 인식해 모자이크(블러) 처리를 할 수 있는 **Windows 데스크톱 GUI 애플리케이션**입니다.
 
 ---
@@ -44,7 +48,7 @@ import shutil
 ```
 
 ## 📁 경로 처리 (resource_path)
-PyInstaller로 .exe 빌드된 실행 환경과 .py 파일 실행할 때의 파일 경로를 다르게 처리함.
+- PyInstaller로 .exe 빌드된 실행 환경과 .py 파일 실행할 때의 파일 경로를 다르게 처리함.
 resource_path() 함수는 실행 파일 또는 소스 위치에 있는 리소스 파일 경로를 반환.
 
 
@@ -66,10 +70,10 @@ def resource_path(relative_path):
 ```
 
 ## 🧵 QThread 기반 멀티스레딩 구성
-GUI의 응답을 유지하기 위해 주요 작업을 QThread로 정리
+- GUI의 응답을 유지하기 위해 주요 작업을 QThread로 정리
 
 ### 📌 1. DownloadThread
-YouTube 영상 다운로드 담당 스레드
+- YouTube 영상 다운로드 담당 스레드
 
 ```python
 class DownloadThread(QThread):
@@ -92,11 +96,11 @@ class DownloadThread(QThread):
             self.error.emit(str(e))
 ```
 
-다운로드 성공 시 finished 시그널로 제목/경로 전달
-실패 시 error 시그널로 예외 메시지 전송
+- 다운로드 성공 시 finished 시그널로 제목/경로 전달
+- 실패 시 error 시그널로 예외 메시지 전송
 
 ### 📌 2. RenameThread
-영상 파일명 변경 담당 스레드
+- 영상 파일명 변경 담당 스레드
 
 ```python
 class RenameThread(QThread):
@@ -119,12 +123,12 @@ class RenameThread(QThread):
             self.error.emit(str(e))
 ```
 
-기존 경로에서 새 파일명으로 변경
-성공/실패를 시그널로 GUI에 전달
-blur처리 시 한글, 공백으로 인한 오류 예방
+- 기존 경로에서 새 파일명으로 변경
+- 성공/실패를 시그널로 GUI에 전달
+- blur처리 시 한글, 공백으로 인한 오류 예방
 
 ### 📌 3. BlurThread
-얼굴 모자이크 처리 스레드
+- 얼굴 모자이크 처리 스레드
 
 ```python
 class BlurThread(QThread):
@@ -255,14 +259,14 @@ class BlurThread(QThread):
             self.error.emit(str(e))
 ```
 
-OpenCV로 얼굴 인식 → 프레임 단위로 모자이크 처리
-ffmpeg를 사용해 오디오와 병합
-처리 도중 progress, log, error, finished 시그널을 통해 GUI와 연동
+- OpenCV로 얼굴 인식 → 프레임 단위로 모자이크 처리
+- ffmpeg를 사용해 오디오와 병합
+- 처리 도중 progress, log, error, finished 시그널을 통해 GUI와 연동
 
 
 ## 💡 에러 이슈 및 해결
-.audio.write_audiofile() 에서 NoneType 에러 발생
-→ moviepy 대신 subprocess + ffmpeg 방식으로 오디오 추출/병합 대체
+- .audio.write_audiofile() 에서 NoneType 에러 발생
+- → moviepy 대신 subprocess + ffmpeg 방식으로 오디오 추출/병합 대체
 
 
 ## 🖥️ GUI 메인 클래스: Window
@@ -399,7 +403,7 @@ class Window(QMainWindow,Ui_Video_blur):
         self.status_lab.append(msg)
 ```
 
-GUI의 주요 기능을 담당하는 **Window 클래스**의 핵심 메서드
+- GUI의 주요 기능을 담당하는 **Window 클래스**의 핵심 메서드
 
 | 함수명 | 설명 |
 |--------|--------------------------------|
@@ -413,8 +417,8 @@ GUI의 주요 기능을 담당하는 **Window 클래스**의 핵심 메서드
 ---
 
 ## 📝 사용 설명서 (GUI 내부에도 표시됨)
-유튜브 링크를 입력한 뒤 Download 버튼 클릭
-파일명을 영어로 변경
+- 유튜브 링크를 입력한 뒤 Download 버튼 클릭
+- 파일명을 영어로 변경
 모자이크 처리를 원하는 영상 파일명을 입력하고 Blur 버튼 클릭
 처리 완료 후 blurred_파일명.mp4 생성됨
 
