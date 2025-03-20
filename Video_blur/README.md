@@ -36,13 +36,13 @@ from moviepy.editor import VideoFileClip
 import cv2
 from PySide6.QtGui import QIcon
 from moviepy.config import change_settings
-import shutil```
-📁 경로 처리 (resource_path)
+import shutil
+```
+
+## 📁 경로 처리 (resource_path)
 PyInstaller로 .exe 빌드된 실행 환경과 .py 파일 실행 환경에서 각각 경로 문제를 해결하기 위한 함수입니다.
 
-python
-복사
-편집
+```python
 if getattr(sys,'frozen',False):
     base_dir = os.path.dirname(sys.executable)
 else:
@@ -52,18 +52,41 @@ def resource_path(relative_path):
     if hasattr(sys, "_MEIPASS"):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(base_dir, relative_path)
+ #PyInstaller로 패키징한 exe 실행시 sys에 _MEIPASS 속성을 추가
+ #sys._MEIPASS -> 임시 디렉토리
+ #.exe -> _MEIPASS가 존재하므로 여기 경로 사용
+ #.py -> _MEIPASS가 존재x 현재 디렉터리 기준의 상대경로 사용
+```
+
 🧵 QThread 기반 멀티스레딩 구성
 📦 1. DownloadThread
 YouTube 영상 다운로드 담당 스레드
 
-python
-복사
-편집
+```python
 class DownloadThread(QThread):
-    ...
+    progress = Signal(int)
+    finished = Signal(str, str)
+    error = Signal(str)
+    
+    def __init__(self,url,out_path):
+        super().__init__()
+        self.url = url
+        self.out_path = out_path
+        
+    def run(self):
+        try:
+            yt = YouTube(self.url)
+            ys = yt.streams.get_highest_resolution()
+            filepath = ys.download(output_path=self.out_path)
+            self.finished.emit(yt.title, filepath)
+        except Exception as e:
+            self.error.emit(str(e))
+```
+
 다운로드 성공 시 finished 시그널로 제목/경로 전달
 실패 시 error 시그널로 예외 메시지 전송
-📦 2. RenameThread
+
+## 📦 2. RenameThread
 영상 파일명 변경 담당 스레드
 
 python
