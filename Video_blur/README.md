@@ -58,8 +58,9 @@ def resource_path(relative_path):
  #.py -> _MEIPASS가 존재x 현재 디렉터리 기준의 상대경로 사용
 ```
 
-🧵 QThread 기반 멀티스레딩 구성
-📦 1. DownloadThread
+## 🧵 QThread 기반 멀티스레딩 구성
+
+## 📦 1. DownloadThread
 YouTube 영상 다운로드 담당 스레드
 
 ```python
