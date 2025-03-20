@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/90153858-df2e-4668-8765-f36a1aa7fabb" width="400"/>
+</p>
+
 # 🎭 Video_blur - 얼굴 모자이크 처리 GUI 애플리케이션
 
 PySide6, OpenCV, moviepy, pytubefix 등을 활용하여 YouTube 영상을 다운로드하고,  
@@ -40,7 +44,9 @@ import shutil
 ```
 
 ## 📁 경로 처리 (resource_path)
-PyInstaller로 .exe 빌드된 실행 환경과 .py 파일 실행 환경에서 각각 경로 문제를 해결하기 위한 함수입니다.
+PyInstaller로 .exe 빌드된 실행 환경과 .py 파일 실행할 때의 파일 경로를 다르게 처리함.
+resource_path() 함수는 실행 파일 또는 소스 위치에 있는 리소스 파일 경로를 반환.
+
 
 ```python
 if getattr(sys,'frozen',False):
@@ -52,6 +58,7 @@ def resource_path(relative_path):
     if hasattr(sys, "_MEIPASS"):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(base_dir, relative_path)
+
  #PyInstaller로 패키징한 exe 실행시 sys에 _MEIPASS 속성을 추가
  #sys._MEIPASS -> 임시 디렉토리
  #.exe -> _MEIPASS가 존재하므로 여기 경로 사용
@@ -59,8 +66,9 @@ def resource_path(relative_path):
 ```
 
 ## 🧵 QThread 기반 멀티스레딩 구성
+GUI의 응답을 유지하기 위해 주요 작업을 QThread로 정리
 
-## 📦 1. DownloadThread
+### 📦 1. DownloadThread
 YouTube 영상 다운로드 담당 스레드
 
 ```python
@@ -87,7 +95,7 @@ class DownloadThread(QThread):
 다운로드 성공 시 finished 시그널로 제목/경로 전달
 실패 시 error 시그널로 예외 메시지 전송
 
-## 📦 2. RenameThread
+### 📦 2. RenameThread
 영상 파일명 변경 담당 스레드
 
 ```python
@@ -113,8 +121,9 @@ class RenameThread(QThread):
 
 기존 경로에서 새 파일명으로 변경
 성공/실패를 시그널로 GUI에 전달
+blur처리 시 한글, 공백으로 인한 오류 예방
 
-## 📦 3. BlurThread
+### 📦 3. BlurThread
 얼굴 모자이크 처리 스레드
 
 ```python
@@ -250,9 +259,11 @@ OpenCV로 얼굴 인식 → 프레임 단위로 모자이크 처리
 ffmpeg를 사용해 오디오와 병합
 처리 도중 progress, log, error, finished 시그널을 통해 GUI와 연동
 
+
 ## 💡 에러 이슈 및 해결
 .audio.write_audiofile() 에서 NoneType 에러 발생
 → moviepy 대신 subprocess + ffmpeg 방식으로 오디오 추출/병합 대체
+
 
 ## 🖥️ GUI 메인 클래스: Window
 ```python
@@ -388,15 +399,16 @@ class Window(QMainWindow,Ui_Video_blur):
         self.status_lab.append(msg)
 ```
 
-PySide6 기반 GUI 전체 제어
-주요 메서드:
-함수명	설명
-download_video()	영상 다운로드 시작
-rename_video()	영상 파일명 변경
-blur_faces_in_video()	얼굴 블러 처리 시작
-clear_log()	로그 및 입력 필드 초기화
-update_progress()	진행률 반영
-append_log()	로그 출력
+GUI의 주요 기능을 담당하는 **Window 클래스**의 핵심 메서드
+
+| 함수명 | 설명 |
+|--------|--------------------------------|
+| `download_video()` | 유튜브 영상 다운로드 시작 |
+| `rename_video()` | 다운로드한 영상 파일명 변경 |
+| `blur_faces_in_video()` | 얼굴 블러 처리 시작 |
+| `clear_log()` | 로그 및 입력 필드 초기화 |
+| `update_progress()` | 진행률 업데이트 |
+| `append_log()` | 로그 추가 및 출력 | 
 
 ---
 
@@ -405,6 +417,7 @@ append_log()	로그 출력
 파일명을 영어로 변경
 모자이크 처리를 원하는 영상 파일명을 입력하고 Blur 버튼 클릭
 처리 완료 후 blurred_파일명.mp4 생성됨
+
 
 ## ✅ 기타
 .exe 실행 파일로 빌드 시 경로 관련 오류를 방지하기 위해 resource_path() 사용
