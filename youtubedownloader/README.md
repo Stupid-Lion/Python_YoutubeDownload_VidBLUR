@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/cb27f64d-80cf-41a4-9e5b-52d803e5f808" width="400"/>
+</p>
+
 ### 🎬 유튜브 영상 다운로드 및 파일이름 변경과 프레임 추출 프로그램
 ## 📌 개요
 - PyQt5 기반의 GUI를 통해 유튜브 링크를 입력하면
