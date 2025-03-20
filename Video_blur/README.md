@@ -68,7 +68,7 @@ def resource_path(relative_path):
 ## 🧵 QThread 기반 멀티스레딩 구성
 GUI의 응답을 유지하기 위해 주요 작업을 QThread로 정리
 
-### 📦 1. DownloadThread
+### 📌 1. DownloadThread
 YouTube 영상 다운로드 담당 스레드
 
 ```python
@@ -95,7 +95,7 @@ class DownloadThread(QThread):
 다운로드 성공 시 finished 시그널로 제목/경로 전달
 실패 시 error 시그널로 예외 메시지 전송
 
-### 📦 2. RenameThread
+### 📌 2. RenameThread
 영상 파일명 변경 담당 스레드
 
 ```python
@@ -123,7 +123,7 @@ class RenameThread(QThread):
 성공/실패를 시그널로 GUI에 전달
 blur처리 시 한글, 공백으로 인한 오류 예방
 
-### 📦 3. BlurThread
+### 📌 3. BlurThread
 얼굴 모자이크 처리 스레드
 
 ```python
