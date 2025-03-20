@@ -36,7 +36,7 @@ from moviepy.editor import VideoFileClip
 import cv2
 from PySide6.QtGui import QIcon
 from moviepy.config import change_settings
-import shutil
+import shutil```
 📁 경로 처리 (resource_path)
 PyInstaller로 .exe 빌드된 실행 환경과 .py 파일 실행 환경에서 각각 경로 문제를 해결하기 위한 함수입니다.
 
