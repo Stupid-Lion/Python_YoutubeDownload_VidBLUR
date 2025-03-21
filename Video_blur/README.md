@@ -2,9 +2,10 @@
   <img src="https://github.com/user-attachments/assets/90153858-df2e-4668-8765-f36a1aa7fabb" width="400"/>
 </p>
 
-# 🎭 Video_blur - 얼굴 모자이크 처리 GUI 애플리케이션
+# 🎭 Video_blur - Haar CasCade 모델을 활용한 얼굴 모자이크 처리 GUI 애플리케이션
 
 - 기존 youtubedownload 애플리케이션을 업그레이드 한 버전으로 얼굴인식 + 블러 처리 기능 추가
+- OpenCV 기반 Haar CasCade 얼굴 인식 모델 사용
 - QThread 기반 멀티 스레딩 도입
 - GUI 구성 향상 (PyQt5 -> PySide6)
 - PyInstaller 대응 강화
