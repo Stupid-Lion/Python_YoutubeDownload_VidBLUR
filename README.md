@@ -19,8 +19,9 @@ YouTube 영상 다운로드 및 얼굴 모자이크 기능을 제공하는 Pytho
 - 🔽 YouTube 영상 다운로드 (`pytubefix`)
 - ✏️ 영상 파일 이름 변경
 - 🖼️ 영상 → 프레임 이미지(JPG)로 변환
-- 🧠 얼굴 자동 감지 및 모자이크 처리 (`OpenCV`)
 - 🖥️ PySide6 / PyQt5 기반 GUI 제공
+- 🔍 Haar CasCade 모델을 활용한 얼굴인식
+- 🧠 얼굴 자동 감지 후 모자이크 처리 (`OpenCV`)
 
 ---
 
