@@ -10,7 +10,7 @@ YouTube 영상 다운로드 및 얼굴 모자이크 기능을 제공하는 Pytho
 | 폴더명 | 설명 |
 |--------|------|
 | [`youtubedownloader`](./youtubedownloader) | YouTube 영상 다운로드, 파일 이름 변경, 프레임 이미지 추출 기능 포함 |
-| [`Video_blur`](./blur) | 영상에서 얼굴 인식 후 자동 블러 처리 기능 포함 |
+| [`Video_blur`](./Video_blur) | 영상에서 얼굴 인식 후 자동 블러 처리 기능 포함 |
 
 ---
 
